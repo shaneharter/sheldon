@@ -3,8 +3,7 @@ namespace Sheldon;
 declare(ticks = 5);
 
 define('SRC_PATH', __DIR__ . '/');
-define('SHELDON_PATH', dirname(SRC_PATH) . '/');
-define('VENDORS_PATH', SHELDON_PATH . '/vendors/');
+define('VENDORS_PATH', dirname(SRC_PATH) . '/vendors/');
 
 use \Zend\Console\Getopt;
 
