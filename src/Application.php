@@ -352,7 +352,13 @@ abstract class Application extends Cli
     $prompt = true;
     while(!$this->shutdown)
     {
-      $this->filter_contexts();
+      // We run filter_contexts every iteration to ensure any runtime criteria for a context is satisfied.
+      // If a context is filtered, we always want to re-write the prompt in case the Context filter changed it.
+      if ($this->filter_contexts())
+      {
+        $this->write->eol();
+        $prompt = true;
+      }
 
       if ($prompt)
       {
@@ -710,16 +716,21 @@ abstract class Application extends Cli
    * If ContextB::criteria() returns false, the list will become:
    * [List Head] -> ContextC -> DefaultContext
    *
-   * @return void
+   * @return bool Returns True if a Context was filtered
    */
   private function filter_contexts()
   {
-    $this->each(function(Context $context) {
+    $that = $this;
+    return $this->each(function(Context $context, $exited) use($that) {
       if (!$context->criteria())
       {
-        $this->set_context_head($context->next());
+        $that->set_context_head($context->next());
+        return true;
       }
-    });
+
+      return $exited;
+    }, false);
+
   }
 
   /**
