@@ -2,7 +2,8 @@
 namespace Sheldon\examples\SignalConsole;
 use Sheldon;
 
-//require_once SHELDON_PATH . 'Application.php';
+require_once APP_PATH . 'Commands.php';
+require_once APP_PATH . 'Contexts.php';
 
 /**
  * The SignalConsole allows you to attach to a PID and then easily send signals to it.
@@ -11,13 +12,11 @@ use Sheldon;
 class Console extends Sheldon\Application
 {
 
-  protected $default_prompt = 'PID >';
-
-
   protected function setup()
   {
-    // TODO: Implement setup() method.
+    return array(
+      new DefaultContext(),
+    );
   }
-
 
 }
